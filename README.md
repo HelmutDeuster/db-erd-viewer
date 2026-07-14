@@ -21,12 +21,12 @@ Funciona de dos formas, con el mismo paquete:
 ## Instalación
 
 ```bash
-pip install "db-erd-viewer[all] @ git+https://github.com/<usuario>/db-erd-viewer.git"
+pip install "db-erd-viewer[all] @ git+https://github.com/HelmutDeuster/db-erd-viewer.git"
 ```
 
 O clonando el repo:
 ```bash
-git clone https://github.com/<usuario>/db-erd-viewer.git
+git clone https://github.com/HelmutDeuster/db-erd-viewer.git
 cd db-erd-viewer
 pip install -e ".[all]"
 ```

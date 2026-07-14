@@ -35,7 +35,7 @@ que me conecte directo a la base de datos?"
 ```bash
 pip install -e /path/to/db-erd-viewer --break-system-packages
 # o, si ya está publicada en GitHub:
-pip install "db-erd-viewer[all] @ git+https://github.com/<usuario>/db-erd-viewer.git" --break-system-packages
+pip install "db-erd-viewer[all] @ git+https://github.com/HelmutDeuster/db-erd-viewer.git" --break-system-packages
 ```
 
 Verificar con `db-erd-viewer --help`. Si el comando no aparece en el PATH,
