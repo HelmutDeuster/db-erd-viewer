@@ -1,0 +1,501 @@
+{
+  "raw_ddl": "CREATE TABLE users (\n  id uuid PRIMARY KEY,\n  name varchar(120),\n  email varchar(255)\n);\n\nCREATE TABLE addresses (\n  id uuid PRIMARY KEY,\n  user_id uuid REFERENCES users(id),\n  street varchar(200),\n  city varchar(100)\n);\n\nCREATE TABLE categories (\n  id uuid PRIMARY KEY,\n  name varchar(100)\n);\n\nCREATE TABLE products (\n  id uuid PRIMARY KEY,\n  name varchar(120),\n  price numeric(10,2),\n  category_id uuid REFERENCES categories(id)\n);\n\nCREATE TABLE suppliers (\n  id uuid PRIMARY KEY,\n  name varchar(120)\n);\n\nCREATE TABLE product_suppliers (\n  id uuid PRIMARY KEY,\n  product_id uuid REFERENCES products(id),\n  supplier_id uuid REFERENCES suppliers(id)\n);\n\nCREATE TABLE warehouses (\n  id uuid PRIMARY KEY,\n  name varchar(100),\n  address_id uuid REFERENCES addresses(id)\n);\n\nCREATE TABLE inventory (\n  id uuid PRIMARY KEY,\n  product_id uuid REFERENCES products(id),\n  warehouse_id uuid REFERENCES warehouses(id),\n  quantity int\n);\n\nCREATE TABLE carts (\n  id uuid PRIMARY KEY,\n  user_id uuid REFERENCES users(id)\n);\n\nCREATE TABLE cart_items (\n  id uuid PRIMARY KEY,\n  cart_id uuid REFERENCES carts(id),\n  product_id uuid REFERENCES products(id),\n  quantity int\n);\n\nCREATE TABLE orders (\n  id uuid PRIMARY KEY,\n  user_id uuid REFERENCES users(id),\n  address_id uuid REFERENCES addresses(id),\n  created_at timestamp\n);\n\nCREATE TABLE order_items (\n  id uuid PRIMARY KEY,\n  order_id uuid REFERENCES orders(id),\n  product_id uuid REFERENCES products(id),\n  quantity int\n);\n\nCREATE TABLE payments (\n  id uuid PRIMARY KEY,\n  order_id uuid REFERENCES orders(id),\n  amount numeric(10,2),\n  method varchar(40)\n);\n\nCREATE TABLE shipments (\n  id uuid PRIMARY KEY,\n  order_id uuid REFERENCES orders(id),\n  warehouse_id uuid REFERENCES warehouses(id),\n  status varchar(40)\n);\n\nCREATE TABLE reviews (\n  id uuid PRIMARY KEY,\n  product_id uuid REFERENCES products(id),\n  user_id uuid REFERENCES users(id),\n  rating int\n);\n\nCREATE TABLE coupons (\n  id uuid PRIMARY KEY,\n  code varchar(40),\n  discount numeric(5,2)\n);\n\nCREATE TABLE order_coupons (\n  id uuid PRIMARY KEY,\n  order_id uuid REFERENCES orders(id),\n  coupon_id uuid REFERENCES coupons(id)\n);\n\nCREATE TABLE employees (\n  id uuid PRIMARY KEY,\n  name varchar(120),\n  warehouse_id uuid REFERENCES warehouses(id)\n);",
+  "tables": [
+    {
+      "name": "users",
+      "columns": [
+        {
+          "name": "id",
+          "type": "uuid",
+          "nullable": true,
+          "pk": true
+        },
+        {
+          "name": "name",
+          "type": "varchar(120)",
+          "nullable": true
+        },
+        {
+          "name": "email",
+          "type": "varchar(255)",
+          "nullable": true
+        }
+      ]
+    },
+    {
+      "name": "addresses",
+      "columns": [
+        {
+          "name": "id",
+          "type": "uuid",
+          "nullable": true,
+          "pk": true
+        },
+        {
+          "name": "user_id",
+          "type": "uuid",
+          "nullable": true,
+          "fk": {
+            "table": "users",
+            "column": "id"
+          }
+        },
+        {
+          "name": "street",
+          "type": "varchar(200)",
+          "nullable": true
+        },
+        {
+          "name": "city",
+          "type": "varchar(100)",
+          "nullable": true
+        }
+      ]
+    },
+    {
+      "name": "categories",
+      "columns": [
+        {
+          "name": "id",
+          "type": "uuid",
+          "nullable": true,
+          "pk": true
+        },
+        {
+          "name": "name",
+          "type": "varchar(100)",
+          "nullable": true
+        }
+      ]
+    },
+    {
+      "name": "products",
+      "columns": [
+        {
+          "name": "id",
+          "type": "uuid",
+          "nullable": true,
+          "pk": true
+        },
+        {
+          "name": "name",
+          "type": "varchar(120)",
+          "nullable": true
+        },
+        {
+          "name": "price",
+          "type": "numeric(10,2)",
+          "nullable": true
+        },
+        {
+          "name": "category_id",
+          "type": "uuid",
+          "nullable": true,
+          "fk": {
+            "table": "categories",
+            "column": "id"
+          }
+        }
+      ]
+    },
+    {
+      "name": "suppliers",
+      "columns": [
+        {
+          "name": "id",
+          "type": "uuid",
+          "nullable": true,
+          "pk": true
+        },
+        {
+          "name": "name",
+          "type": "varchar(120)",
+          "nullable": true
+        }
+      ]
+    },
+    {
+      "name": "product_suppliers",
+      "columns": [
+        {
+          "name": "id",
+          "type": "uuid",
+          "nullable": true,
+          "pk": true
+        },
+        {
+          "name": "product_id",
+          "type": "uuid",
+          "nullable": true,
+          "fk": {
+            "table": "products",
+            "column": "id"
+          }
+        },
+        {
+          "name": "supplier_id",
+          "type": "uuid",
+          "nullable": true,
+          "fk": {
+            "table": "suppliers",
+            "column": "id"
+          }
+        }
+      ]
+    },
+    {
+      "name": "warehouses",
+      "columns": [
+        {
+          "name": "id",
+          "type": "uuid",
+          "nullable": true,
+          "pk": true
+        },
+        {
+          "name": "name",
+          "type": "varchar(100)",
+          "nullable": true
+        },
+        {
+          "name": "address_id",
+          "type": "uuid",
+          "nullable": true,
+          "fk": {
+            "table": "addresses",
+            "column": "id"
+          }
+        }
+      ]
+    },
+    {
+      "name": "inventory",
+      "columns": [
+        {
+          "name": "id",
+          "type": "uuid",
+          "nullable": true,
+          "pk": true
+        },
+        {
+          "name": "product_id",
+          "type": "uuid",
+          "nullable": true,
+          "fk": {
+            "table": "products",
+            "column": "id"
+          }
+        },
+        {
+          "name": "warehouse_id",
+          "type": "uuid",
+          "nullable": true,
+          "fk": {
+            "table": "warehouses",
+            "column": "id"
+          }
+        },
+        {
+          "name": "quantity",
+          "type": "int",
+          "nullable": true
+        }
+      ]
+    },
+    {
+      "name": "carts",
+      "columns": [
+        {
+          "name": "id",
+          "type": "uuid",
+          "nullable": true,
+          "pk": true
+        },
+        {
+          "name": "user_id",
+          "type": "uuid",
+          "nullable": true,
+          "fk": {
+            "table": "users",
+            "column": "id"
+          }
+        }
+      ]
+    },
+    {
+      "name": "cart_items",
+      "columns": [
+        {
+          "name": "id",
+          "type": "uuid",
+          "nullable": true,
+          "pk": true
+        },
+        {
+          "name": "cart_id",
+          "type": "uuid",
+          "nullable": true,
+          "fk": {
+            "table": "carts",
+            "column": "id"
+          }
+        },
+        {
+          "name": "product_id",
+          "type": "uuid",
+          "nullable": true,
+          "fk": {
+            "table": "products",
+            "column": "id"
+          }
+        },
+        {
+          "name": "quantity",
+          "type": "int",
+          "nullable": true
+        }
+      ]
+    },
+    {
+      "name": "orders",
+      "columns": [
+        {
+          "name": "id",
+          "type": "uuid",
+          "nullable": true,
+          "pk": true
+        },
+        {
+          "name": "user_id",
+          "type": "uuid",
+          "nullable": true,
+          "fk": {
+            "table": "users",
+            "column": "id"
+          }
+        },
+        {
+          "name": "address_id",
+          "type": "uuid",
+          "nullable": true,
+          "fk": {
+            "table": "addresses",
+            "column": "id"
+          }
+        },
+        {
+          "name": "created_at",
+          "type": "timestamp",
+          "nullable": true
+        }
+      ]
+    },
+    {
+      "name": "order_items",
+      "columns": [
+        {
+          "name": "id",
+          "type": "uuid",
+          "nullable": true,
+          "pk": true
+        },
+        {
+          "name": "order_id",
+          "type": "uuid",
+          "nullable": true,
+          "fk": {
+            "table": "orders",
+            "column": "id"
+          }
+        },
+        {
+          "name": "product_id",
+          "type": "uuid",
+          "nullable": true,
+          "fk": {
+            "table": "products",
+            "column": "id"
+          }
+        },
+        {
+          "name": "quantity",
+          "type": "int",
+          "nullable": true
+        }
+      ]
+    },
+    {
+      "name": "payments",
+      "columns": [
+        {
+          "name": "id",
+          "type": "uuid",
+          "nullable": true,
+          "pk": true
+        },
+        {
+          "name": "order_id",
+          "type": "uuid",
+          "nullable": true,
+          "fk": {
+            "table": "orders",
+            "column": "id"
+          }
+        },
+        {
+          "name": "amount",
+          "type": "numeric(10,2)",
+          "nullable": true
+        },
+        {
+          "name": "method",
+          "type": "varchar(40)",
+          "nullable": true
+        }
+      ]
+    },
+    {
+      "name": "shipments",
+      "columns": [
+        {
+          "name": "id",
+          "type": "uuid",
+          "nullable": true,
+          "pk": true
+        },
+        {
+          "name": "order_id",
+          "type": "uuid",
+          "nullable": true,
+          "fk": {
+            "table": "orders",
+            "column": "id"
+          }
+        },
+        {
+          "name": "warehouse_id",
+          "type": "uuid",
+          "nullable": true,
+          "fk": {
+            "table": "warehouses",
+            "column": "id"
+          }
+        },
+        {
+          "name": "status",
+          "type": "varchar(40)",
+          "nullable": true
+        }
+      ]
+    },
+    {
+      "name": "reviews",
+      "columns": [
+        {
+          "name": "id",
+          "type": "uuid",
+          "nullable": true,
+          "pk": true
+        },
+        {
+          "name": "product_id",
+          "type": "uuid",
+          "nullable": true,
+          "fk": {
+            "table": "products",
+            "column": "id"
+          }
+        },
+        {
+          "name": "user_id",
+          "type": "uuid",
+          "nullable": true,
+          "fk": {
+            "table": "users",
+            "column": "id"
+          }
+        },
+        {
+          "name": "rating",
+          "type": "int",
+          "nullable": true
+        }
+      ]
+    },
+    {
+      "name": "coupons",
+      "columns": [
+        {
+          "name": "id",
+          "type": "uuid",
+          "nullable": true,
+          "pk": true
+        },
+        {
+          "name": "code",
+          "type": "varchar(40)",
+          "nullable": true
+        },
+        {
+          "name": "discount",
+          "type": "numeric(5,2)",
+          "nullable": true
+        }
+      ]
+    },
+    {
+      "name": "order_coupons",
+      "columns": [
+        {
+          "name": "id",
+          "type": "uuid",
+          "nullable": true,
+          "pk": true
+        },
+        {
+          "name": "order_id",
+          "type": "uuid",
+          "nullable": true,
+          "fk": {
+            "table": "orders",
+            "column": "id"
+          }
+        },
+        {
+          "name": "coupon_id",
+          "type": "uuid",
+          "nullable": true,
+          "fk": {
+            "table": "coupons",
+            "column": "id"
+          }
+        }
+      ]
+    },
+    {
+      "name": "employees",
+      "columns": [
+        {
+          "name": "id",
+          "type": "uuid",
+          "nullable": true,
+          "pk": true
+        },
+        {
+          "name": "name",
+          "type": "varchar(120)",
+          "nullable": true
+        },
+        {
+          "name": "warehouse_id",
+          "type": "uuid",
+          "nullable": true,
+          "fk": {
+            "table": "warehouses",
+            "column": "id"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "raw_ddl": "CREATE TABLE users (\n  id UUID PRIMARY KEY,\n  name VARCHAR(120) NOT NULL,\n  email VARCHAR(255) NOT NULL UNIQUE\n);\n\nCREATE TABLE products (\n  id UUID PRIMARY KEY,\n  name VARCHAR(120) NOT NULL,\n  price NUMERIC(10,2) NOT NULL\n);\n\nCREATE TABLE orders (\n  id UUID PRIMARY KEY,\n  user_id UUID NOT NULL REFERENCES users(id),\n  created_at TIMESTAMP NOT NULL DEFAULT now()\n);\n\nCREATE TABLE order_items (\n  id UUID PRIMARY KEY,\n  order_id UUID NOT NULL REFERENCES orders(id),\n  product_id UUID NOT NULL REFERENCES products(id),\n  quantity INT NOT NULL DEFAULT 1\n);\n",
+  "tables": [
+    {
+      "name": "users",
+      "position": {"x": 40, "y": 40},
+      "columns": [
+        {"name": "id", "type": "uuid", "pk": true, "nullable": false},
+        {"name": "name", "type": "varchar(120)", "nullable": false},
+        {"name": "email", "type": "varchar(255)", "nullable": false}
+      ]
+    },
+    {
+      "name": "products",
+      "position": {"x": 480, "y": 40},
+      "columns": [
+        {"name": "id", "type": "uuid", "pk": true, "nullable": false},
+        {"name": "name", "type": "varchar(120)", "nullable": false},
+        {"name": "price", "type": "numeric(10,2)", "nullable": false}
+      ]
+    },
+    {
+      "name": "orders",
+      "position": {"x": 40, "y": 320},
+      "columns": [
+        {"name": "id", "type": "uuid", "pk": true, "nullable": false},
+        {"name": "user_id", "type": "uuid", "nullable": false, "fk": {"table": "users", "column": "id"}},
+        {"name": "created_at", "type": "timestamp", "nullable": false}
+      ]
+    },
+    {
+      "name": "order_items",
+      "position": {"x": 480, "y": 320},
+      "columns": [
+        {"name": "id", "type": "uuid", "pk": true, "nullable": false},
+        {"name": "order_id", "type": "uuid", "nullable": false, "fk": {"table": "orders", "column": "id"}},
+        {"name": "product_id", "type": "uuid", "nullable": false, "fk": {"table": "products", "column": "id"}},
+        {"name": "quantity", "type": "int", "nullable": false}
+      ]
+    }
+  ]
+}

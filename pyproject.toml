@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "db-erd-viewer"
+version = "0.1.0"
+description = "Genera un ERD visual e interactivo (SVG custom, FKs a nivel de columna) + DDL de referencia, como un único HTML autocontenido. Usable como skill de Claude Code o como comando CLI standalone."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+dependencies = [
+    "sqlglot>=25.0.0",
+]
+
+[project.optional-dependencies]
+postgres = ["psycopg2-binary>=2.9"]
+mysql = ["pymysql>=1.1"]
+all = ["psycopg2-binary>=2.9", "pymysql>=1.1"]
+
+[project.scripts]
+db-erd-viewer = "db_erd_viewer.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
